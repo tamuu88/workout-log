@@ -193,8 +193,11 @@
     }
 
     /* メニュー表 */
-
-    #menuList,
+  
+    #menuList {
+    margin-top: 28px;
+    }
+    
     #newMenuForm {
       display: none;
       margin-top: 28px;
@@ -381,14 +384,6 @@
   </div>
 
   <div class="week" id="week"></div>
-
-
-  <!-- メニュー追加 -->
-
-  <button class="add-button" onclick="showMenu()">
-    ＋ メニューを追加
-  </button>
-
 
   <!-- メニュー表 -->
 
@@ -676,21 +671,6 @@ function displaySavedTraining() {
 }
 
 
-/* メニュー表を表示 */
-
-function showMenu() {
-
-  document.getElementById("menuList").style.display =
-    "block";
-
-  document.getElementById("newMenuForm").style.display =
-    "none";
-
-  displayMenus();
-
-}
-
-
 /* メニュー表 */
 
 function displayMenus() {
@@ -889,10 +869,6 @@ function addMenu(name, detail) {
     "trainingHistory",
     JSON.stringify(newHistory)
   );
-
-
-  document.getElementById("menuList").style.display =
-    "none";
 
 
   displaySavedTraining();
