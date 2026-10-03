@@ -818,25 +818,10 @@ function addMenu(name, detail) {
   const history =
     getHistory();
 
-
   const dateKey =
     getDateKey(currentDate);
 
-
-  /*
-    その日にすでに記録がある場合は、
-    いったん削除して新しいメニューに置き換える
-  */
-
-  const newHistory =
-    history.filter(function(record) {
-
-      return record.dateKey !== dateKey;
-
-    });
-
-
-  newHistory.push({
+  history.push({
 
     date:
       getDateText(currentDate),
@@ -852,19 +837,16 @@ function addMenu(name, detail) {
 
   });
 
-
   localStorage.setItem(
     "trainingHistory",
-    JSON.stringify(newHistory)
+    JSON.stringify(history)
   );
-
 
   displaySavedTraining();
 
   displayWeek();
 
 }
-
 
 /* その日の記録をリセット */
 
