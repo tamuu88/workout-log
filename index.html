@@ -12,11 +12,12 @@
       box-sizing: border-box;
     }
 
+
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #f7f5ef;
-      color: #46504b;
+      background: #f7f4ec;
+      color: #40524a;
     }
 
     header {
@@ -140,21 +141,22 @@
       color: #8b948f;
       width: 13%;
     }
-
+    
     .circle {
       width: 27px;
       height: 27px;
       margin: 5px auto 3px;
       border-radius: 50%;
-      background: #e6e9e4;
+      background: #fffefa;
+      border: 1px solid #d9e0db;
     }
-
+    
     .circle.done {
       background: #a9c4b5;
     }
 
     .circle.today {
-      outline: 2px solid #7f9e8f;
+      outline: 2px solid #719b87;
       outline-offset: 2px;
     }
 
@@ -206,8 +208,8 @@
     /* 実施済み */
 
     .menu-card.done {
-      background: #dfece5;
-      border-color: #a8c2b4;
+      background: #d8e9df;
+      border-color: #9bbcab;
     }
 
     .menu-card.done .menu-name {
@@ -830,9 +832,7 @@ function displayMenus() {
 
 
       name.textContent =
-        isDone
-          ? "☑ " + menu.name
-          : menu.name;
+        menu.name;
 
 
 
