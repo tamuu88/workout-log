@@ -303,7 +303,7 @@ function showMenu() {
 
 /* メニュー表を表示する */
 
-function displayMenus() {
+  function displayMenus() {
 
   const strength =
     document.getElementById("strengthMenus");
@@ -312,15 +312,15 @@ function displayMenus() {
     document.getElementById("stretchMenus");
 
   strength.innerHTML = "";
-
   stretch.innerHTML = "";
 
+  const customMenus = getCustomMenus();
 
   const menus =
-    defaultMenus.concat(getCustomMenus());
+    defaultMenus.concat(customMenus);
 
 
-  menus.forEach(function(menu) {
+  menus.forEach(function(menu, index) {
 
     const card = document.createElement("div");
 
@@ -329,15 +329,59 @@ function displayMenus() {
     card.innerHTML = `
       <div class="menu-name">${menu.name}</div>
       <div class="menu-detail">${menu.detail}</div>
-      <button>
+
+      <button class="use-button">
         今日に追加
       </button>
     `;
 
-    card.querySelector("button").onclick =
+
+    card.querySelector(".use-button").onclick =
       function() {
         addMenu(menu.name, menu.detail);
       };
+
+
+    /*
+      自分で追加したメニューだけ
+      編集・削除ボタンを表示
+    */
+
+    if (index >= defaultMenus.length) {
+
+      const customIndex =
+        index - defaultMenus.length;
+
+
+      const editButton =
+        document.createElement("button");
+
+      editButton.textContent = "編集";
+
+      editButton.onclick =
+        function() {
+          editMenu(customIndex);
+        };
+
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.textContent = "削除";
+
+      deleteButton.style.background = "#aaa";
+
+      deleteButton.onclick =
+        function() {
+          deleteMenu(customIndex);
+        };
+
+
+      card.appendChild(editButton);
+
+      card.appendChild(deleteButton);
+
+    }
 
 
     if (menu.type === "筋トレ") {
@@ -352,7 +396,7 @@ function displayMenus() {
 
   });
 
-}
+  }
 
 
 /* 今日のメニューに追加 */
@@ -560,7 +604,104 @@ function showHistory() {
   );
 
 }
+function editMenu(index) {
 
+  const customMenus = getCustomMenus();
+
+  const menu = customMenus[index];
+
+
+  const newName =
+    prompt("メニュー名", menu.name);
+
+  if (newName === null) {
+    return;
+  }
+
+
+  const newDetail =
+    prompt("回数・時間", menu.detail);
+
+  if (newDetail === null) {
+    return;
+  }
+
+
+  const newType =
+    prompt(
+      "種類を入力してください（筋トレ / ストレッチ）",
+      menu.type
+    );
+
+
+  if (
+    newType !== "筋トレ" &&
+    newType !== "ストレッチ"
+  ) {
+
+    alert("「筋トレ」または「ストレッチ」と入力してください");
+
+    return;
+  }
+
+
+  customMenus[index] = {
+
+    name: newName,
+
+    detail: newDetail,
+
+    type: newType
+
+  };
+
+
+  localStorage.setItem(
+    "customMenus",
+    JSON.stringify(customMenus)
+  );
+
+
+  displayMenus();
+
+  alert("編集しました");
+
+}
+
+
+function deleteMenu(index) {
+
+  const customMenus = getCustomMenus();
+
+
+  const menu = customMenus[index];
+
+
+  const answer =
+    confirm(
+      "「" + menu.name + "」を削除しますか？"
+    );
+
+
+  if (!answer) {
+    return;
+  }
+
+
+  customMenus.splice(index, 1);
+
+
+  localStorage.setItem(
+    "customMenus",
+    JSON.stringify(customMenus)
+  );
+
+
+  displayMenus();
+
+  alert("削除しました");
+
+}
 </script>
 
 </body>
