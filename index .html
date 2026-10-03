@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Training</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f7f7f5;
+      color: #333;
+    }
+
+    header {
+      padding: 30px 20px 20px;
+      background: white;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .date {
+      margin-top: 8px;
+      color: #777;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .menu-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .menu-detail {
+      margin-top: 6px;
+      color: #777;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+      background: white;
+      border-radius: 16px;
+    }
+
+    .add-button {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 10px;
+      font-size: 17px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>My Training</h1>
+    <div class="date">今日のトレーニング</div>
+  </header>
+
+  <main>
+    <h2>今日やること</h2>
+
+    <div id="todayMenu">
+      <div class="empty">
+        まだメニューがありません
+      </div>
+    </div>
+
+    <button class="add-button">
+      ＋ メニューを追加
+    </button>
+  </main>
+
+</body>
+</html>
