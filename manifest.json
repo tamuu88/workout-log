@@ -1,0 +1,15 @@
+{
+  "name": "今日のワークアウト",
+  "short_name": "ワークアウト",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f4ec",
+  "theme_color": "#78988a",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
