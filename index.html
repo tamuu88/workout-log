@@ -73,9 +73,13 @@
       background: #333;
       color: white;
       font-size: 14px;
+      cursor: pointer;
     }
 
-    .add-button {
+    .add-button,
+    .save-button,
+    .history-button,
+    .new-menu-button {
       width: 100%;
       border-radius: 16px;
       padding: 18px;
@@ -84,21 +88,15 @@
     }
 
     .save-button {
-      width: 100%;
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 10px;
-      font-size: 17px;
       background: #555;
     }
 
     .history-button {
-      width: 100%;
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 10px;
-      font-size: 17px;
       background: #777;
+    }
+
+    .new-menu-button {
+      background: #999;
     }
 
     .empty {
@@ -109,14 +107,28 @@
       border-radius: 16px;
     }
 
-    #menuList {
+    #menuList,
+    #newMenuForm,
+    #history {
       display: none;
       margin-top: 30px;
     }
 
-    #history {
-      display: none;
-      margin-top: 30px;
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    label {
+      font-size: 14px;
+      color: #666;
     }
   </style>
 </head>
@@ -151,56 +163,61 @@
   </button>
 
 
+  <!-- メニュー表 -->
+
   <div id="menuList">
 
     <h2>メニュー表</h2>
 
     <h3>筋トレ</h3>
 
-    <div class="menu-card">
-      <div class="menu-name">腕立て</div>
-      <div class="menu-detail">5回</div>
-      <button onclick="addMenu('腕立て', '5回')">
-        今日に追加
-      </button>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-name">ラットプル</div>
-      <div class="menu-detail">30回</div>
-      <button onclick="addMenu('ラットプル', '30回')">
-        今日に追加
-      </button>
-    </div>
-
-    <div class="menu-card">
-      <div class="menu-name">スクワット</div>
-      <div class="menu-detail">10回</div>
-      <button onclick="addMenu('スクワット', '10回')">
-        今日に追加
-      </button>
-    </div>
+    <div id="strengthMenus"></div>
 
     <h3>ストレッチ</h3>
 
-    <div class="menu-card">
-      <div class="menu-name">首・肩ストレッチ</div>
-      <div class="menu-detail">3分</div>
-      <button onclick="addMenu('首・肩ストレッチ', '3分')">
-        今日に追加
-      </button>
-    </div>
+    <div id="stretchMenus"></div>
 
-    <div class="menu-card">
-      <div class="menu-name">股関節ストレッチ</div>
-      <div class="menu-detail">3分</div>
-      <button onclick="addMenu('股関節ストレッチ', '3分')">
-        今日に追加
-      </button>
-    </div>
+    <button class="new-menu-button" onclick="showNewMenuForm()">
+      ＋ 新しいメニューを作る
+    </button>
 
   </div>
 
+
+  <!-- 新しいメニューを作る -->
+
+  <div id="newMenuForm">
+
+    <h2>新しいメニュー</h2>
+
+    <label>メニュー名</label>
+    <input
+      type="text"
+      id="newMenuName"
+      placeholder="例：腹筋"
+    >
+
+    <label>回数・時間</label>
+    <input
+      type="text"
+      id="newMenuDetail"
+      placeholder="例：10回、3分など"
+    >
+
+    <label>種類</label>
+    <select id="newMenuType">
+      <option value="筋トレ">筋トレ</option>
+      <option value="ストレッチ">ストレッチ</option>
+    </select>
+
+    <button onclick="createMenu()">
+      メニュー表に追加
+    </button>
+
+  </div>
+
+
+  <!-- 履歴 -->
 
   <div id="history">
 
@@ -230,10 +247,115 @@ todayDate.textContent = dateText;
 let selectedMenu = null;
 
 
-function showMenu() {
-  document.getElementById("menuList").style.display = "block";
+/* 最初から入っているメニュー */
+
+const defaultMenus = [
+  {
+    name: "腕立て",
+    detail: "5回",
+    type: "筋トレ"
+  },
+  {
+    name: "ラットプル",
+    detail: "30回",
+    type: "筋トレ"
+  },
+  {
+    name: "スクワット",
+    detail: "10回",
+    type: "筋トレ"
+  },
+  {
+    name: "首・肩ストレッチ",
+    detail: "3分",
+    type: "ストレッチ"
+  },
+  {
+    name: "股関節ストレッチ",
+    detail: "3分",
+    type: "ストレッチ"
+  }
+];
+
+
+/* 自分で追加したメニューを取得 */
+
+function getCustomMenus() {
+
+  return JSON.parse(
+    localStorage.getItem("customMenus")
+  ) || [];
+
 }
 
+
+/* メニュー表を表示 */
+
+function showMenu() {
+
+  document.getElementById("menuList").style.display = "block";
+
+  document.getElementById("newMenuForm").style.display = "none";
+
+  displayMenus();
+}
+
+
+/* メニュー表を表示する */
+
+function displayMenus() {
+
+  const strength =
+    document.getElementById("strengthMenus");
+
+  const stretch =
+    document.getElementById("stretchMenus");
+
+  strength.innerHTML = "";
+
+  stretch.innerHTML = "";
+
+
+  const menus =
+    defaultMenus.concat(getCustomMenus());
+
+
+  menus.forEach(function(menu) {
+
+    const card = document.createElement("div");
+
+    card.className = "menu-card";
+
+    card.innerHTML = `
+      <div class="menu-name">${menu.name}</div>
+      <div class="menu-detail">${menu.detail}</div>
+      <button>
+        今日に追加
+      </button>
+    `;
+
+    card.querySelector("button").onclick =
+      function() {
+        addMenu(menu.name, menu.detail);
+      };
+
+
+    if (menu.type === "筋トレ") {
+
+      strength.appendChild(card);
+
+    } else {
+
+      stretch.appendChild(card);
+
+    }
+
+  });
+
+}
+
+
+/* 今日のメニューに追加 */
 
 function addMenu(name, detail) {
 
@@ -242,7 +364,8 @@ function addMenu(name, detail) {
     detail: detail
   };
 
-  const todayMenu = document.getElementById("todayMenu");
+  const todayMenu =
+    document.getElementById("todayMenu");
 
   todayMenu.innerHTML = `
     <div class="menu-card">
@@ -251,54 +374,151 @@ function addMenu(name, detail) {
     </div>
   `;
 
-  document.getElementById("menuList").style.display = "none";
+  document.getElementById("menuList").style.display =
+    "none";
 }
 
+
+/* 保存 */
 
 function saveTraining() {
 
   if (!selectedMenu) {
+
     alert("まずメニューを選んでください");
+
     return;
   }
 
+
   const history =
-    JSON.parse(localStorage.getItem("trainingHistory")) || [];
+    JSON.parse(
+      localStorage.getItem("trainingHistory")
+    ) || [];
+
 
   const record = {
+
     date: dateText,
+
     name: selectedMenu.name,
+
     detail: selectedMenu.detail
+
   };
 
+
   history.push(record);
+
 
   localStorage.setItem(
     "trainingHistory",
     JSON.stringify(history)
   );
 
+
   alert("保存しました");
 
+
   selectedMenu = null;
+
 
   document.getElementById("todayMenu").innerHTML = `
     <div class="empty">
       保存しました
     </div>
   `;
+
 }
 
+
+/* 新しいメニューの入力画面 */
+
+function showNewMenuForm() {
+
+  document.getElementById("newMenuForm").style.display =
+    "block";
+
+}
+
+
+/* 新しいメニューを作る */
+
+function createMenu() {
+
+  const name =
+    document.getElementById("newMenuName").value.trim();
+
+  const detail =
+    document.getElementById("newMenuDetail").value.trim();
+
+  const type =
+    document.getElementById("newMenuType").value;
+
+
+  if (!name || !detail) {
+
+    alert("メニュー名と回数・時間を入力してください");
+
+    return;
+  }
+
+
+  const customMenus =
+    getCustomMenus();
+
+
+  customMenus.push({
+
+    name: name,
+
+    detail: detail,
+
+    type: type
+
+  });
+
+
+  localStorage.setItem(
+    "customMenus",
+    JSON.stringify(customMenus)
+  );
+
+
+  alert("メニュー表に追加しました");
+
+
+  document.getElementById("newMenuName").value = "";
+
+  document.getElementById("newMenuDetail").value = "";
+
+
+  document.getElementById("newMenuForm").style.display =
+    "none";
+
+
+  displayMenus();
+
+}
+
+
+/* 履歴を見る */
 
 function showHistory() {
 
   const history =
-    JSON.parse(localStorage.getItem("trainingHistory")) || [];
+    JSON.parse(
+      localStorage.getItem("trainingHistory")
+    ) || [];
+
 
   const historyList =
     document.getElementById("historyList");
 
-  document.getElementById("history").style.display = "block";
+
+  document.getElementById("history").style.display =
+    "block";
+
 
   if (history.length === 0) {
 
@@ -309,26 +529,36 @@ function showHistory() {
     `;
 
     return;
+
   }
+
 
   historyList.innerHTML = "";
 
-  history.slice().reverse().forEach(function(record) {
 
-    const item = document.createElement("div");
+  history.slice().reverse().forEach(
+    function(record) {
 
-    item.className = "menu-card";
+      const item =
+        document.createElement("div");
 
-    item.innerHTML = `
-      <div class="menu-name">${record.name}</div>
-      <div class="menu-detail">
-        ${record.detail}　・　${record.date}
-      </div>
-    `;
+      item.className = "menu-card";
 
-    historyList.appendChild(item);
+      item.innerHTML = `
+        <div class="menu-name">
+          ${record.name}
+        </div>
 
-  });
+        <div class="menu-detail">
+          ${record.detail} ・ ${record.date}
+        </div>
+      `;
+
+      historyList.appendChild(item);
+
+    }
+  );
+
 }
 
 </script>
