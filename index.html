@@ -103,6 +103,69 @@
       ＋ メニューを追加
     </button>
   </main>
+<div id="menuList" style="display:none;">
+  <h2>メニュー表</h2>
 
+  <h3>筋トレ</h3>
+
+  <div class="menu-card">
+    <div class="menu-name">腕立て</div>
+    <div class="menu-detail">5回</div>
+    <button onclick="addMenu('腕立て', '5回')">今日に追加</button>
+  </div>
+
+  <div class="menu-card">
+    <div class="menu-name">ラットプル</div>
+    <div class="menu-detail">30回</div>
+    <button onclick="addMenu('ラットプル', '30回')">今日に追加</button>
+  </div>
+
+  <div class="menu-card">
+    <div class="menu-name">スクワット</div>
+    <div class="menu-detail">10回</div>
+    <button onclick="addMenu('スクワット', '10回')">今日に追加</button>
+  </div>
+
+  <h3>ストレッチ</h3>
+
+  <div class="menu-card">
+    <div class="menu-name">首・肩ストレッチ</div>
+    <div class="menu-detail">ゆっくり3分</div>
+    <button onclick="addMenu('首・肩ストレッチ', '3分')">今日に追加</button>
+  </div>
+
+  <div class="menu-card">
+    <div class="menu-name">股関節ストレッチ</div>
+    <div class="menu-detail">ゆっくり3分</div>
+    <button onclick="addMenu('股関節ストレッチ', '3分')">今日に追加</button>
+  </div>
+</div>
+
+<script>
+  const addButton = document.querySelector('.add-button');
+  const menuList = document.getElementById('menuList');
+  const todayMenu = document.getElementById('todayMenu');
+
+  addButton.addEventListener('click', function() {
+    menuList.style.display = 'block';
+  });
+
+  function addMenu(name, detail) {
+    const item = document.createElement('div');
+
+    item.className = 'menu-card';
+
+    item.innerHTML = `
+      <label>
+        <input type="checkbox">
+        <span class="menu-name">${name}</span>
+      </label>
+      <div class="menu-detail">${detail}</div>
+    `;
+
+    todayMenu.innerHTML = '';
+    todayMenu.appendChild(item);
+  }
+</script>
 </body>
 </html>
