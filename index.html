@@ -222,7 +222,13 @@
 <body>
 
 <header>
-  <h1>My Training</h1>
+  <div class="header-inner">
+    <h1>My Training</h1>
+
+    <button class="reset-today-button" onclick="resetTraining()">
+      リセット
+    </button>
+  </div>
 </header>
 
 <main>
@@ -375,6 +381,42 @@ const defaultMenus = [
 
 
 /* 今日の日付 */
+
+  function resetTraining() {
+
+  const dateKey =
+    getDateKey(currentDate);
+
+  const answer =
+    confirm(
+      getDateText(currentDate) +
+      "のトレーニング記録を削除しますか？"
+    );
+
+  if (!answer) {
+    return;
+  }
+
+  const history =
+    getHistory();
+
+  const newHistory =
+    history.filter(function(record) {
+
+      return record.dateKey !== dateKey;
+
+    });
+
+  localStorage.setItem(
+    "trainingHistory",
+    JSON.stringify(newHistory)
+  );
+
+  displaySavedTraining();
+
+  displayWeek();
+
+}
 
 function getToday() {
 
