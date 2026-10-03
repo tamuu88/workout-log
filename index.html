@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>今日のワークアウト</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -36,7 +38,7 @@
       color: #4f6259;
     }
 
-    /* リセットは控えめ */
+    /* リセット */
 
     .reset-button {
       margin: 0;
@@ -70,6 +72,7 @@
       color: #697871;
     }
 
+
     /* 日付 */
 
     .date-navigation {
@@ -95,6 +98,10 @@
       cursor: pointer;
     }
 
+    .date-navigation button:disabled {
+      cursor: default;
+    }
+
     .date-display {
       text-align: center;
       flex: 1;
@@ -109,39 +116,11 @@
       color: #91a097;
     }
 
-    /* 今日できたこと */
-
-    .today-card {
-      background: #fffdf8;
-      border-radius: 17px;
-      padding: 18px;
-      margin-bottom: 22px;
-      box-shadow: 0 2px 8px rgba(70, 80, 75, 0.05);
-    }
-
-    .today-name {
-      font-size: 19px;
-      font-weight: bold;
-      color: #52645c;
-    }
-
-    .today-detail {
-      margin-top: 7px;
-      color: #89938e;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 30px 20px;
-      color: #9aa29e;
-      background: #fffdf8;
-      border-radius: 17px;
-    }
 
     /* 過去7日間 */
 
     .week-title {
-      margin: 28px 0 10px;
+      margin: 10px 0 10px;
       font-size: 14px;
       color: #87918c;
     }
@@ -179,29 +158,18 @@
       outline-offset: 2px;
     }
 
-    /* メニュー追加ボタン */
-
-    .add-button {
-      width: 100%;
-      border: none;
-      border-radius: 15px;
-      padding: 15px;
-      background: #78988a;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
 
     /* メニュー表 */
-  
+
     #menuList {
-    margin-top: 28px;
+      margin-top: 10px;
     }
-    
+
     #newMenuForm {
       display: none;
       margin-top: 28px;
     }
+
 
     /* 3列カード */
 
@@ -223,6 +191,27 @@
       justify-content: space-between;
       text-align: center;
       box-shadow: 0 2px 7px rgba(70, 80, 75, 0.05);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease;
+    }
+
+    .menu-card:active {
+      transform: scale(0.97);
+    }
+
+    /* 実施済み */
+
+    .menu-card.done {
+      background: #dfece5;
+      border-color: #a8c2b4;
+    }
+
+    .menu-card.done .menu-name {
+      color: #526d60;
     }
 
     .menu-name {
@@ -239,17 +228,8 @@
       color: #89938e;
     }
 
-    .use-button {
-      width: 100%;
-      margin-top: 9px;
-      padding: 7px 4px;
-      border: none;
-      border-radius: 8px;
-      background: #e4eee8;
-      color: #60766b;
-      font-size: 11px;
-      cursor: pointer;
-    }
+
+    /* 自作メニューの編集・削除 */
 
     .edit-delete {
       display: flex;
@@ -279,6 +259,9 @@
       color: #9b8980;
     }
 
+
+    /* 新しいメニューを作る */
+
     .new-menu-button {
       width: 100%;
       margin-top: 18px;
@@ -290,6 +273,7 @@
       font-size: 14px;
       cursor: pointer;
     }
+
 
     /* 新しいメニュー */
 
@@ -321,7 +305,11 @@
       font-size: 14px;
     }
 
+
+    /* スマホ */
+
     @media (max-width: 400px) {
+
       .menu-grid {
         gap: 7px;
       }
@@ -333,48 +321,66 @@
       .menu-name {
         font-size: 13px;
       }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
+
 <header>
+
   <div class="header-inner">
+
     <h1>今日のワークアウト</h1>
 
-    <button class="reset-button" onclick="resetTraining()">
+    <button
+      class="reset-button"
+      onclick="resetTraining()"
+    >
       リセット
     </button>
+
   </div>
+
 </header>
 
 
+
 <main>
+
 
   <!-- 日付 -->
 
   <div class="date-navigation">
 
-    <button onclick="changeDate(-1)">←</button>
+    <button onclick="changeDate(-1)">
+      ←
+    </button>
 
     <div class="date-display">
+
       <span id="dateDisplay"></span>
-      <span class="today-label" id="todayLabel"></span>
+
+      <span
+        class="today-label"
+        id="todayLabel"
+      ></span>
+
     </div>
 
-    <button id="nextButton" onclick="changeDate(1)">→</button>
+    <button
+      id="nextButton"
+      onclick="changeDate(1)"
+    >
+      →
+    </button>
 
   </div>
 
-
-  <!-- 今日できたこと -->
-
-  <h2 id="trainingTitle">
-    今日できたこと
-  </h2>
-
-  <div id="todayMenu"></div>
 
 
   <!-- 過去7日間 -->
@@ -383,7 +389,12 @@
     過去7日間
   </div>
 
-  <div class="week" id="week"></div>
+  <div
+    class="week"
+    id="week"
+  ></div>
+
+
 
   <!-- メニュー表 -->
 
@@ -391,19 +402,32 @@
 
     <h2>メニュー表</h2>
 
+
     <h3>筋トレ</h3>
 
-    <div id="strengthMenus" class="menu-grid"></div>
+    <div
+      id="strengthMenus"
+      class="menu-grid"
+    ></div>
+
 
     <h3>ストレッチ</h3>
 
-    <div id="stretchMenus" class="menu-grid"></div>
+    <div
+      id="stretchMenus"
+      class="menu-grid"
+    ></div>
 
-    <button class="new-menu-button" onclick="showNewMenuForm()">
+
+    <button
+      class="new-menu-button"
+      onclick="showNewMenuForm()"
+    >
       ＋ 新しいメニューを作る
     </button>
 
   </div>
+
 
 
   <!-- 新しいメニュー -->
@@ -412,7 +436,10 @@
 
     <h2>新しいメニュー</h2>
 
-    <label>メニュー名</label>
+
+    <label>
+      メニュー名
+    </label>
 
     <input
       type="text"
@@ -420,7 +447,10 @@
       placeholder="例：腹筋"
     >
 
-    <label>回数・時間</label>
+
+    <label>
+      回数・時間
+    </label>
 
     <input
       type="text"
@@ -428,23 +458,44 @@
       placeholder="例：10回、3分など"
     >
 
-    <label>種類</label>
+
+    <label>
+      種類
+    </label>
 
     <select id="newMenuType">
-      <option value="筋トレ">筋トレ</option>
-      <option value="ストレッチ">ストレッチ</option>
+
+      <option value="筋トレ">
+        筋トレ
+      </option>
+
+      <option value="ストレッチ">
+        ストレッチ
+      </option>
+
     </select>
 
-    <button class="create-button" onclick="createMenu()">
+
+    <button
+      class="create-button"
+      onclick="createMenu()"
+    >
       メニュー表に追加
     </button>
 
   </div>
 
+
 </main>
 
 
+
 <script>
+
+
+/* =========================
+   初期メニュー
+   ========================= */
 
 const defaultMenus = [
 
@@ -461,27 +512,56 @@ const defaultMenus = [
   },
 
   {
-    name: "キャット＆ドッグ",
-    detail: "5回",
+    name: "スクワット",
+    detail: "10回",
+    type: "筋トレ"
+  },
+
+  {
+    name: "首・肩ストレッチ",
+    detail: "3分",
+    type: "ストレッチ"
+  },
+
+  {
+    name: "股関節ストレッチ",
+    detail: "3分",
     type: "ストレッチ"
   }
 
 ];
 
 
+
+/* =========================
+   今日の日付
+   ========================= */
+
 function getToday() {
 
-  const date = new Date();
+  const date =
+    new Date();
 
-  date.setHours(0, 0, 0, 0);
+  date.setHours(
+    0,
+    0,
+    0,
+    0
+  );
 
   return date;
 
 }
 
 
-let currentDate = getToday();
+let currentDate =
+  getToday();
 
+
+
+/* =========================
+   日付キー
+   ========================= */
 
 function getDateKey(date) {
 
@@ -489,15 +569,30 @@ function getDateKey(date) {
     date.getFullYear();
 
   const month =
-    String(date.getMonth() + 1).padStart(2, "0");
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0");
 
   const day =
-    String(date.getDate()).padStart(2, "0");
+    String(
+      date.getDate()
+    ).padStart(2, "0");
 
-  return year + "-" + month + "-" + day;
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
 
 }
 
+
+
+/* =========================
+   日付表示
+   ========================= */
 
 function getDateText(date) {
 
@@ -513,6 +608,11 @@ function getDateText(date) {
 }
 
 
+
+/* =========================
+   今日かどうか
+   ========================= */
+
 function isToday(date) {
 
   return (
@@ -523,44 +623,63 @@ function isToday(date) {
 }
 
 
+
+/* =========================
+   履歴取得
+   ========================= */
+
 function getHistory() {
 
   return JSON.parse(
-    localStorage.getItem("trainingHistory")
+    localStorage.getItem(
+      "trainingHistory"
+    )
   ) || [];
 
 }
 
+
+
+/* =========================
+   自作メニュー取得
+   ========================= */
 
 function getCustomMenus() {
 
   return JSON.parse(
-    localStorage.getItem("customMenus")
+    localStorage.getItem(
+      "customMenus"
+    )
   ) || [];
 
 }
 
 
-/* 日付表示 */
+
+/* =========================
+   日付表示
+   ========================= */
 
 function displayDate() {
 
-  document.getElementById("dateDisplay").textContent =
+  document
+    .getElementById("dateDisplay")
+    .textContent =
     getDateText(currentDate);
 
 
-  document.getElementById("todayLabel").textContent =
-    isToday(currentDate) ? "今日" : "";
-
-
-  document.getElementById("trainingTitle").textContent =
+  document
+    .getElementById("todayLabel")
+    .textContent =
     isToday(currentDate)
-      ? "今日できたこと"
-      : getDateText(currentDate) + "のトレーニング";
+      ? "今日"
+      : "";
 
 
   const nextButton =
-    document.getElementById("nextButton");
+    document.getElementById(
+      "nextButton"
+    );
 
 
   nextButton.disabled =
@@ -568,106 +687,69 @@ function displayDate() {
 
 
   nextButton.style.opacity =
-    isToday(currentDate) ? "0.35" : "1";
+    isToday(currentDate)
+      ? "0.35"
+      : "1";
 
 
-  displaySavedTraining();
+  displayMenus();
 
 }
 
 
-/* 日付移動 */
+
+/* =========================
+   日付移動
+   ========================= */
 
 function changeDate(amount) {
 
-  currentDate.setDate(
-    currentDate.getDate() + amount
+  const newDate =
+    new Date(currentDate);
+
+  newDate.setDate(
+    newDate.getDate() + amount
   );
 
-  displayDate();
 
-}
+  /* 今日より未来には進めない */
 
-
-/* その日の記録を表示 */
-
-function displaySavedTraining() {
-
-  const container =
-    document.getElementById("todayMenu");
-
-
-  const history =
-    getHistory();
-
-
-  const dateKey =
-    getDateKey(currentDate);
-
-
-  const records =
-    history.filter(function(record) {
-
-      return record.dateKey === dateKey;
-
-    });
-
-
-  if (records.length === 0) {
-
-    container.innerHTML = `
-
-      <div class="empty">
-        まだメニューがありません
-      </div>
-
-    `;
+  if (
+    newDate > getToday()
+  ) {
 
     return;
 
   }
 
 
-  container.innerHTML = "";
+  currentDate =
+    newDate;
 
 
-  records.forEach(function(record) {
+  displayDate();
 
-    const card =
-      document.createElement("div");
-
-    card.className = "today-card";
-
-
-    card.innerHTML = `
-
-      <div class="today-name">
-        ${record.name}
-      </div>
-
-      <div class="today-detail">
-        ${record.detail}
-      </div>
-
-    `;
-
-
-    container.appendChild(card);
-
-  });
+  displayWeek();
 
 }
 
 
-/* メニュー表 */
+
+/* =========================
+   メニュー表
+   ========================= */
 
 function displayMenus() {
 
   const strength =
-    document.getElementById("strengthMenus");
+    document.getElementById(
+      "strengthMenus"
+    );
 
   const stretch =
-    document.getElementById("stretchMenus");
+    document.getElementById(
+      "stretchMenus"
+    );
 
 
   strength.innerHTML = "";
@@ -680,180 +762,336 @@ function displayMenus() {
 
 
   const menus =
-    defaultMenus.concat(customMenus);
+    defaultMenus.concat(
+      customMenus
+    );
 
-
-  menus.forEach(function(menu, index) {
-
-    const card =
-      document.createElement("div");
-
-    card.className = "menu-card";
-
-
-    const name =
-      document.createElement("div");
-
-    name.className = "menu-name";
-
-    name.textContent =
-      menu.name;
-
-
-    const detail =
-      document.createElement("div");
-
-    detail.className = "menu-detail";
-
-    detail.textContent =
-      menu.detail;
-
-
-    const useButton =
-      document.createElement("button");
-
-    useButton.className = "use-button";
-
-    useButton.textContent =
-      "追加";
-
-
-    useButton.onclick =
-      function() {
-
-        addMenu(
-          menu.name,
-          menu.detail
-        );
-
-      };
-
-
-    card.appendChild(name);
-
-    card.appendChild(detail);
-
-    card.appendChild(useButton);
-
-
-    /* 自分で追加したメニュー */
-
-    if (index >= defaultMenus.length) {
-
-      const customIndex =
-        index - defaultMenus.length;
-
-
-      const editDelete =
-        document.createElement("div");
-
-      editDelete.className =
-        "edit-delete";
-
-
-      const editButton =
-        document.createElement("button");
-
-      editButton.className =
-        "edit-button";
-
-      editButton.textContent =
-        "編集";
-
-
-      editButton.onclick =
-        function() {
-
-          editMenu(customIndex);
-
-        };
-
-
-      const deleteButton =
-        document.createElement("button");
-
-      deleteButton.className =
-        "delete-button";
-
-      deleteButton.textContent =
-        "削除";
-
-
-      deleteButton.onclick =
-        function() {
-
-          deleteMenu(customIndex);
-
-        };
-
-
-      editDelete.appendChild(editButton);
-
-      editDelete.appendChild(deleteButton);
-
-      card.appendChild(editDelete);
-
-    }
-
-
-    if (menu.type === "筋トレ") {
-
-      strength.appendChild(card);
-
-    } else {
-
-      stretch.appendChild(card);
-
-    }
-
-  });
-
-}
-
-
-/* メニューを選択 */
-
-function addMenu(name, detail) {
 
   const history =
     getHistory();
 
+
   const dateKey =
     getDateKey(currentDate);
 
-  history.push({
 
-    date:
-      getDateText(currentDate),
+  menus.forEach(
+    function(menu, index) {
 
-    dateKey:
-      dateKey,
 
-    name:
-      name,
+      const card =
+        document.createElement(
+          "div"
+        );
 
-    detail:
-      detail
 
-  });
+      card.className =
+        "menu-card";
+
+
+      /* その日に実施済みか */
+
+      const isDone =
+        history.some(
+          function(record) {
+
+            return (
+              record.dateKey ===
+                dateKey &&
+              record.name ===
+                menu.name &&
+              record.detail ===
+                menu.detail
+            );
+
+          }
+        );
+
+
+      if (isDone) {
+
+        card.classList.add(
+          "done"
+        );
+
+      }
+
+
+
+      /* メニュー名 */
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "menu-name";
+
+
+      name.textContent =
+        isDone
+          ? "☑ " + menu.name
+          : menu.name;
+
+
+
+      /* 回数・時間 */
+
+      const detail =
+        document.createElement(
+          "div"
+        );
+
+      detail.className =
+        "menu-detail";
+
+
+      detail.textContent =
+        menu.detail;
+
+
+
+      card.appendChild(name);
+
+      card.appendChild(detail);
+
+
+
+      /* カードをタップ */
+
+      card.onclick =
+        function() {
+
+          toggleMenu(
+            menu.name,
+            menu.detail
+          );
+
+        };
+
+
+
+      /* 自作メニュー */
+
+      if (
+        index >=
+        defaultMenus.length
+      ) {
+
+        const customIndex =
+          index -
+          defaultMenus.length;
+
+
+        const editDelete =
+          document.createElement(
+            "div"
+          );
+
+        editDelete.className =
+          "edit-delete";
+
+
+
+        /* 編集 */
+
+        const editButton =
+          document.createElement(
+            "button"
+          );
+
+        editButton.className =
+          "edit-button";
+
+        editButton.textContent =
+          "編集";
+
+
+        editButton.onclick =
+          function(event) {
+
+            event.stopPropagation();
+
+            editMenu(
+              customIndex
+            );
+
+          };
+
+
+
+        /* 削除 */
+
+        const deleteButton =
+          document.createElement(
+            "button"
+          );
+
+        deleteButton.className =
+          "delete-button";
+
+        deleteButton.textContent =
+          "削除";
+
+
+        deleteButton.onclick =
+          function(event) {
+
+            event.stopPropagation();
+
+            deleteMenu(
+              customIndex
+            );
+
+          };
+
+
+
+        editDelete.appendChild(
+          editButton
+        );
+
+        editDelete.appendChild(
+          deleteButton
+        );
+
+
+        card.appendChild(
+          editDelete
+        );
+
+      }
+
+
+
+      /* 種類ごとに表示 */
+
+      if (
+        menu.type ===
+        "筋トレ"
+      ) {
+
+        strength.appendChild(
+          card
+        );
+
+      } else {
+
+        stretch.appendChild(
+          card
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+
+/* =========================
+   完了・未完了を切り替える
+   ========================= */
+
+function toggleMenu(
+  name,
+  detail
+) {
+
+  const history =
+    getHistory();
+
+
+  const dateKey =
+    getDateKey(currentDate);
+
+
+  const index =
+    history.findIndex(
+      function(record) {
+
+        return (
+          record.dateKey ===
+            dateKey &&
+          record.name ===
+            name &&
+          record.detail ===
+            detail
+        );
+
+      }
+    );
+
+
+
+  /* すでに完了している
+     → 未完了に戻す */
+
+  if (index !== -1) {
+
+    history.splice(
+      index,
+      1
+    );
+
+  }
+
+
+  /* 未完了
+     → 完了にする */
+
+  else {
+
+    history.push({
+
+      date:
+        getDateText(
+          currentDate
+        ),
+
+      dateKey:
+        dateKey,
+
+      name:
+        name,
+
+      detail:
+        detail
+
+    });
+
+  }
+
+
 
   localStorage.setItem(
     "trainingHistory",
-    JSON.stringify(history)
+    JSON.stringify(
+      history
+    )
   );
 
-  displaySavedTraining();
+
+  displayMenus();
 
   displayWeek();
 
 }
 
-/* その日の記録をリセット */
+
+
+/* =========================
+   その日の記録をリセット
+   ========================= */
 
 function resetTraining() {
 
   const dateKey =
-    getDateKey(currentDate);
+    getDateKey(
+      currentDate
+    );
 
 
   const history =
@@ -861,11 +1099,16 @@ function resetTraining() {
 
 
   const hasRecord =
-    history.some(function(record) {
+    history.some(
+      function(record) {
 
-      return record.dateKey === dateKey;
+        return (
+          record.dateKey ===
+          dateKey
+        );
 
-    });
+      }
+    );
 
 
   if (!hasRecord) {
@@ -877,7 +1120,9 @@ function resetTraining() {
 
   const answer =
     confirm(
-      getDateText(currentDate) +
+      getDateText(
+        currentDate
+      ) +
       "のトレーニングをリセットしますか？"
     );
 
@@ -890,56 +1135,88 @@ function resetTraining() {
 
 
   const newHistory =
-    history.filter(function(record) {
+    history.filter(
+      function(record) {
 
-      return record.dateKey !== dateKey;
+        return (
+          record.dateKey !==
+          dateKey
+        );
 
-    });
+      }
+    );
 
 
   localStorage.setItem(
     "trainingHistory",
-    JSON.stringify(newHistory)
+    JSON.stringify(
+      newHistory
+    )
   );
 
 
-  displaySavedTraining();
+  displayMenus();
 
   displayWeek();
 
 }
 
 
-/* 新しいメニューを表示 */
+
+/* =========================
+   新しいメニュー入力欄
+   ========================= */
 
 function showNewMenuForm() {
 
-  document.getElementById("newMenuForm").style.display =
+  document
+    .getElementById(
+      "newMenuForm"
+    )
+    .style.display =
     "block";
 
 }
 
 
-/* 新しいメニューを作成 */
+
+/* =========================
+   新しいメニューを作成
+   ========================= */
 
 function createMenu() {
 
   const name =
-    document.getElementById("newMenuName")
-      .value.trim();
+    document
+      .getElementById(
+        "newMenuName"
+      )
+      .value
+      .trim();
 
 
   const detail =
-    document.getElementById("newMenuDetail")
-      .value.trim();
+    document
+      .getElementById(
+        "newMenuDetail"
+      )
+      .value
+      .trim();
 
 
   const type =
-    document.getElementById("newMenuType")
+    document
+      .getElementById(
+        "newMenuType"
+      )
       .value;
 
 
-  if (!name || !detail) {
+
+  if (
+    !name ||
+    !detail
+  ) {
 
     alert(
       "メニュー名と回数・時間を入力してください"
@@ -950,45 +1227,69 @@ function createMenu() {
   }
 
 
+
   const customMenus =
     getCustomMenus();
 
 
   customMenus.push({
 
-    name: name,
+    name:
+      name,
 
-    detail: detail,
+    detail:
+      detail,
 
-    type: type
+    type:
+      type
 
   });
 
 
   localStorage.setItem(
     "customMenus",
-    JSON.stringify(customMenus)
+    JSON.stringify(
+      customMenus
+    )
   );
 
 
-  document.getElementById("newMenuName").value = "";
+  document
+    .getElementById(
+      "newMenuName"
+    )
+    .value = "";
 
-  document.getElementById("newMenuDetail").value = "";
+
+  document
+    .getElementById(
+      "newMenuDetail"
+    )
+    .value = "";
 
 
-  document.getElementById("newMenuForm").style.display =
+  document
+    .getElementById(
+      "newMenuForm"
+    )
+    .style.display =
     "none";
 
 
   displayMenus();
 
 
-  alert("メニュー表に追加しました");
+  alert(
+    "メニュー表に追加しました"
+  );
 
 }
 
 
-/* メニュー編集 */
+
+/* =========================
+   メニュー編集
+   ========================= */
 
 function editMenu(index) {
 
@@ -1007,8 +1308,12 @@ function editMenu(index) {
     );
 
 
-  if (newName === null) {
+  if (
+    newName === null
+  ) {
+
     return;
+
   }
 
 
@@ -1019,8 +1324,12 @@ function editMenu(index) {
     );
 
 
-  if (newDetail === null) {
+  if (
+    newDetail === null
+  ) {
+
     return;
+
   }
 
 
@@ -1047,18 +1356,23 @@ function editMenu(index) {
 
   customMenus[index] = {
 
-    name: newName,
+    name:
+      newName,
 
-    detail: newDetail,
+    detail:
+      newDetail,
 
-    type: newType
+    type:
+      newType
 
   };
 
 
   localStorage.setItem(
     "customMenus",
-    JSON.stringify(customMenus)
+    JSON.stringify(
+      customMenus
+    )
   );
 
 
@@ -1067,7 +1381,10 @@ function editMenu(index) {
 }
 
 
-/* メニュー削除 */
+
+/* =========================
+   メニュー削除
+   ========================= */
 
 function deleteMenu(index) {
 
@@ -1081,21 +1398,30 @@ function deleteMenu(index) {
 
   const answer =
     confirm(
-      "「" + menu.name + "」を削除しますか？"
+      "「" +
+      menu.name +
+      "」を削除しますか？"
     );
 
 
   if (!answer) {
+
     return;
+
   }
 
 
-  customMenus.splice(index, 1);
+  customMenus.splice(
+    index,
+    1
+  );
 
 
   localStorage.setItem(
     "customMenus",
-    JSON.stringify(customMenus)
+    JSON.stringify(
+      customMenus
+    )
   );
 
 
@@ -1104,12 +1430,17 @@ function deleteMenu(index) {
 }
 
 
-/* 過去7日間 */
+
+/* =========================
+   過去7日間
+   ========================= */
 
 function displayWeek() {
 
   const week =
-    document.getElementById("week");
+    document.getElementById(
+      "week"
+    );
 
 
   week.innerHTML = "";
@@ -1119,7 +1450,11 @@ function displayWeek() {
     getHistory();
 
 
-  for (let i = 6; i >= 0; i--) {
+  for (
+    let i = 6;
+    i >= 0;
+    i--
+  ) {
 
     const date =
       getToday();
@@ -1135,30 +1470,50 @@ function displayWeek() {
 
 
     const hasTraining =
-      history.some(function(record) {
+      history.some(
+        function(record) {
 
-        return record.dateKey === dateKey;
+          return (
+            record.dateKey ===
+            dateKey
+          );
 
-      });
+        }
+      );
 
 
-    const dayNames =
-      ["日", "月", "火", "水", "木", "金", "土"];
+    const dayNames = [
+      "日",
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土"
+    ];
 
 
     const dayBox =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     dayBox.className =
       "day";
 
 
     dayBox.textContent =
-      dayNames[date.getDay()];
+      dayNames[
+        date.getDay()
+      ];
 
 
     const circle =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     circle.className =
       "circle";
@@ -1166,32 +1521,47 @@ function displayWeek() {
 
     if (hasTraining) {
 
-      circle.classList.add("done");
+      circle.classList.add(
+        "done"
+      );
 
     }
 
 
     if (isToday(date)) {
 
-      circle.classList.add("today");
+      circle.classList.add(
+        "today"
+      );
 
     }
 
 
-    dayBox.appendChild(circle);
+    dayBox.appendChild(
+      circle
+    );
 
-    week.appendChild(dayBox);
+
+    week.appendChild(
+      dayBox
+    );
 
   }
 
 }
 
 
-/* 起動 */
+
+/* =========================
+   起動
+   ========================= */
 
 displayDate();
+
 displayWeek();
+
 displayMenus();
+
 
 </script>
 
