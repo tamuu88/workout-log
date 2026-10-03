@@ -109,7 +109,7 @@
       color: #91a097;
     }
 
-    /* 今日のトレ */
+    /* 今日できたこと */
 
     .today-card {
       background: #fffdf8;
@@ -368,10 +368,10 @@
   </div>
 
 
-  <!-- 今日のトレ -->
+  <!-- 今日できたこと -->
 
   <h2 id="trainingTitle">
-    今日のトレ
+    今日できたこと
   </h2>
 
   <div id="todayMenu"></div>
@@ -567,7 +567,7 @@ function displayDate() {
 
   document.getElementById("trainingTitle").textContent =
     isToday(currentDate)
-      ? "今日のトレ"
+      ? "今日できたこと"
       : getDateText(currentDate) + "のトレーニング";
 
 
