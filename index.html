@@ -193,9 +193,9 @@
 
 <main>
 
-  <div class="week-title">過去7日間</div>
-
-  <div class="week" id="week"></div>
+  <button class="add-button" onclick="showMenu()">
+    ＋ メニューを追加
+  </button>
 
 
   <h2>今日やること</h2>
@@ -206,13 +206,16 @@
     </div>
   </div>
 
-  <button class="add-button" onclick="showMenu()">
-    ＋ メニューを追加
-  </button>
 
   <button class="save-button" onclick="saveTraining()">
     今日のトレーニングを保存
   </button>
+
+
+  <div class="week-title">過去7日間</div>
+
+  <div class="week" id="week"></div>
+
 
   <button class="history-button" onclick="showHistory()">
     記録を見る
