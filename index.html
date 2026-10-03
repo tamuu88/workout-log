@@ -18,19 +18,15 @@
     }
 
     header {
-      padding: 30px 20px 22px;
+      padding: 28px 20px 20px;
       background: #fffdf8;
+      text-align: center;
     }
 
     h1 {
       margin: 0;
       font-size: 27px;
       color: #4f6259;
-    }
-
-    .date {
-      margin-top: 8px;
-      color: #89938e;
     }
 
     main {
@@ -50,10 +46,46 @@
       color: #697871;
     }
 
+    /* 日付移動 */
+
+    .date-navigation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      background: #fffdf8;
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .date-navigation button {
+      margin: 0;
+      width: 45px;
+      height: 42px;
+      padding: 0;
+      font-size: 24px;
+      background: #e8eee9;
+      color: #60766b;
+    }
+
+    .date-display {
+      text-align: center;
+      flex: 1;
+      font-size: 17px;
+      color: #5e6d66;
+    }
+
+    .today-label {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: #91a097;
+    }
+
     /* 過去7日間 */
 
     .week-title {
-      margin-top: 4px;
+      margin-top: 28px;
       margin-bottom: 12px;
       font-size: 15px;
       color: #87918c;
@@ -65,7 +97,7 @@
       background: #fffdf8;
       padding: 15px 12px;
       border-radius: 18px;
-      margin-bottom: 28px;
+      margin-bottom: 25px;
     }
 
     .day {
@@ -91,6 +123,8 @@
       outline: 2px solid #7f9e8f;
       outline-offset: 2px;
     }
+
+    /* メニュー */
 
     .menu-card {
       background: #fffdf8;
@@ -124,7 +158,6 @@
 
     .add-button,
     .save-button,
-    .history-button,
     .new-menu-button {
       width: 100%;
       border-radius: 16px;
@@ -141,10 +174,6 @@
       background: #91aa9d;
     }
 
-    .history-button {
-      background: #a8b4ae;
-    }
-
     .new-menu-button {
       background: #b5aaa0;
     }
@@ -158,8 +187,7 @@
     }
 
     #menuList,
-    #newMenuForm,
-    #history {
+    #newMenuForm {
       display: none;
       margin-top: 30px;
     }
@@ -181,6 +209,13 @@
       font-size: 14px;
       color: #7d8882;
     }
+
+    .saved-message {
+      text-align: center;
+      color: #78988a;
+      padding: 15px;
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -188,39 +223,62 @@
 
 <header>
   <h1>My Training</h1>
-  <div class="date" id="todayDate"></div>
 </header>
 
 <main>
+
+  <!-- 日付 -->
+
+  <div class="date-navigation">
+
+    <button onclick="changeDate(-1)">
+      ←
+    </button>
+
+    <div class="date-display">
+      <span id="dateDisplay"></span>
+      <span class="today-label" id="todayLabel"></span>
+    </div>
+
+    <button id="nextButton" onclick="changeDate(1)">
+      →
+    </button>
+
+  </div>
+
+
+  <!-- 今日やること -->
+
+  <h2 id="trainingTitle">
+    今日やること
+  </h2>
+
+  <div id="todayMenu">
+  </div>
+
+
+  <button class="save-button" onclick="saveTraining()">
+    この日のトレーニングを保存
+  </button>
+
+
+  <!-- 過去7日間 -->
+
+  <div class="week-title">
+    過去7日間
+  </div>
+
+  <div class="week" id="week"></div>
+
+
+  <!-- メニュー追加 -->
 
   <button class="add-button" onclick="showMenu()">
     ＋ メニューを追加
   </button>
 
 
-  <h2>今日やること</h2>
-
-  <div id="todayMenu">
-    <div class="empty">
-      まだメニューがありません
-    </div>
-  </div>
-
-
-  <button class="save-button" onclick="saveTraining()">
-    今日のトレーニングを保存
-  </button>
-
-
-  <div class="week-title">過去7日間</div>
-
-  <div class="week" id="week"></div>
-
-
-  <button class="history-button" onclick="showHistory()">
-    記録を見る
-  </button>
-
+  <!-- メニュー表 -->
 
   <div id="menuList">
 
@@ -240,6 +298,8 @@
 
   </div>
 
+
+  <!-- 新しいメニュー -->
 
   <div id="newMenuForm">
 
@@ -274,33 +334,10 @@
 
   </div>
 
-
-  <div id="history">
-
-    <h2>これまでの記録</h2>
-
-    <div id="historyList"></div>
-
-  </div>
-
 </main>
 
 
 <script>
-
-const today = new Date();
-
-const dateText =
-  today.getFullYear() + "年" +
-  (today.getMonth() + 1) + "月" +
-  today.getDate() + "日";
-
-document.getElementById("todayDate").textContent =
-  dateText;
-
-
-let selectedMenu = null;
-
 
 const defaultMenus = [
 
@@ -337,14 +374,73 @@ const defaultMenus = [
 ];
 
 
-function getCustomMenus() {
+/* 今日の日付 */
 
-  return JSON.parse(
-    localStorage.getItem("customMenus")
-  ) || [];
+function getToday() {
+
+  const date = new Date();
+
+  date.setHours(0, 0, 0, 0);
+
+  return date;
 
 }
 
+
+/* 現在表示している日 */
+
+let currentDate = getToday();
+
+
+/* 日付をYYYY-MM-DDにする */
+
+function getDateKey(date) {
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(date.getMonth() + 1)
+      .padStart(2, "0");
+
+  const day =
+    String(date.getDate())
+      .padStart(2, "0");
+
+  return year + "-" + month + "-" + day;
+
+}
+
+
+/* 日本語の日付 */
+
+function getDateText(date) {
+
+  return (
+    date.getFullYear() +
+    "年" +
+    (date.getMonth() + 1) +
+    "月" +
+    date.getDate() +
+    "日"
+  );
+
+}
+
+
+/* 今日かどうか */
+
+function isToday(date) {
+
+  return (
+    getDateKey(date) ===
+    getDateKey(getToday())
+  );
+
+}
+
+
+/* 保存データ */
 
 function getHistory() {
 
@@ -355,94 +451,141 @@ function getHistory() {
 }
 
 
-/* 過去7日間を表示 */
+/* カスタムメニュー */
 
-function displayWeek() {
+function getCustomMenus() {
 
-  const week =
-    document.getElementById("week");
-
-  week.innerHTML = "";
-
-  const history = getHistory();
-
-
-  for (let i = 6; i >= 0; i--) {
-
-    const date = new Date();
-
-    date.setHours(0, 0, 0, 0);
-
-    date.setDate(date.getDate() - i);
-
-
-    const year =
-      date.getFullYear();
-
-    const month =
-      String(date.getMonth() + 1)
-      .padStart(2, "0");
-
-    const day =
-      String(date.getDate())
-      .padStart(2, "0");
-
-
-    const dateKey =
-      year + "-" + month + "-" + day;
-
-
-    const hasTraining =
-      history.some(function(record) {
-
-        return record.dateKey === dateKey;
-
-      });
-
-
-    const dayNames =
-      ["日", "月", "火", "水", "木", "金", "土"];
-
-
-    const dayBox =
-      document.createElement("div");
-
-    dayBox.className = "day";
-
-
-    const circle =
-      document.createElement("div");
-
-    circle.className = "circle";
-
-
-    if (hasTraining) {
-
-      circle.classList.add("done");
-
-    }
-
-
-    if (i === 0) {
-
-      circle.classList.add("today");
-
-    }
-
-
-    dayBox.innerHTML =
-      dayNames[date.getDay()];
-
-
-    dayBox.appendChild(circle);
-
-
-    week.appendChild(dayBox);
-
-  }
+  return JSON.parse(
+    localStorage.getItem("customMenus")
+  ) || [];
 
 }
 
+
+/* 日付を表示 */
+
+function displayDate() {
+
+  document.getElementById("dateDisplay").textContent =
+    getDateText(currentDate);
+
+
+  document.getElementById("todayLabel").textContent =
+    isToday(currentDate)
+      ? "今日"
+      : "";
+
+
+  document.getElementById("trainingTitle").textContent =
+    isToday(currentDate)
+      ? "今日やること"
+      : getDateText(currentDate) + "のトレーニング";
+
+
+  /* 今日より未来には進めない */
+
+  document.getElementById("nextButton").disabled =
+    isToday(currentDate);
+
+  document.getElementById("nextButton").style.opacity =
+    isToday(currentDate)
+      ? "0.35"
+      : "1";
+
+
+  displaySavedTraining();
+
+}
+
+
+/* 前の日・次の日 */
+
+function changeDate(amount) {
+
+  currentDate.setDate(
+    currentDate.getDate() + amount
+  );
+
+  displayDate();
+
+}
+
+
+/* その日の保存済みトレーニングを表示 */
+
+function displaySavedTraining() {
+
+  const todayMenu =
+    document.getElementById("todayMenu");
+
+
+  const history =
+    getHistory();
+
+
+  const dateKey =
+    getDateKey(currentDate);
+
+
+  const records =
+    history.filter(function(record) {
+
+      return record.dateKey === dateKey;
+
+    });
+
+
+  if (records.length === 0) {
+
+    todayMenu.innerHTML = `
+
+      <div class="empty">
+        まだメニューがありません
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  todayMenu.innerHTML = "";
+
+
+  records.forEach(function(record) {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "menu-card";
+
+
+    card.innerHTML = `
+
+      <div class="menu-name">
+        ${record.name}
+      </div>
+
+      <div class="menu-detail">
+        ${record.detail}
+      </div>
+
+      <div class="saved-message">
+        保存済み
+      </div>
+
+    `;
+
+
+    todayMenu.appendChild(card);
+
+  });
+
+}
+
+
+/* メニュー表を開く */
 
 function showMenu() {
 
@@ -457,6 +600,8 @@ function showMenu() {
 }
 
 
+/* メニュー表 */
+
 function displayMenus() {
 
   const strength =
@@ -464,6 +609,7 @@ function displayMenus() {
 
   const stretch =
     document.getElementById("stretchMenus");
+
 
   strength.innerHTML = "";
 
@@ -497,7 +643,7 @@ function displayMenus() {
       </div>
 
       <button class="use-button">
-        今日に追加
+        この日に追加
       </button>
 
     `;
@@ -514,6 +660,8 @@ function displayMenus() {
       };
 
 
+    /* 自分で追加したメニューだけ編集・削除 */
+
     if (index >= defaultMenus.length) {
 
       const customIndex =
@@ -524,6 +672,7 @@ function displayMenus() {
         document.createElement("button");
 
       editButton.textContent = "編集";
+
 
       editButton.onclick =
         function() {
@@ -572,114 +721,100 @@ function displayMenus() {
 }
 
 
+/* メニューをその日に追加 */
+
 function addMenu(name, detail) {
-
-  selectedMenu = {
-
-    name: name,
-
-    detail: detail
-
-  };
-
-
-  document.getElementById("todayMenu").innerHTML = `
-
-    <div class="menu-card">
-
-      <div class="menu-name">
-        ${name}
-      </div>
-
-      <div class="menu-detail">
-        ${detail}
-      </div>
-
-    </div>
-
-  `;
-
-
-  document.getElementById("menuList").style.display =
-    "none";
-
-}
-
-
-function saveTraining() {
-
-  if (!selectedMenu) {
-
-    alert("まずメニューを選んでください");
-
-    return;
-
-  }
-
 
   const history =
     getHistory();
 
 
-  const year =
-    today.getFullYear();
-
-  const month =
-    String(today.getMonth() + 1)
-      .padStart(2, "0");
-
-  const day =
-    String(today.getDate())
-      .padStart(2, "0");
+  const dateKey =
+    getDateKey(currentDate);
 
 
-  const record = {
+  /* 同じ日の既存記録を削除 */
 
-    date: dateText,
+  const newHistory =
+    history.filter(function(record) {
+
+      return record.dateKey !== dateKey;
+
+    });
+
+
+  newHistory.push({
+
+    date:
+      getDateText(currentDate),
 
     dateKey:
-      year + "-" + month + "-" + day,
+      dateKey,
 
     name:
-      selectedMenu.name,
+      name,
 
     detail:
-      selectedMenu.detail
+      detail
 
-  };
-
-
-  history.push(record);
+  });
 
 
   localStorage.setItem(
 
     "trainingHistory",
 
-    JSON.stringify(history)
+    JSON.stringify(newHistory)
 
   );
 
 
-  alert("保存しました");
+  document.getElementById("menuList").style.display =
+    "none";
 
 
-  selectedMenu = null;
-
-
-  document.getElementById("todayMenu").innerHTML = `
-
-    <div class="empty">
-      保存しました
-    </div>
-
-  `;
-
+  displaySavedTraining();
 
   displayWeek();
 
 }
 
+
+/* 保存 */
+
+function saveTraining() {
+
+  const history =
+    getHistory();
+
+
+  const dateKey =
+    getDateKey(currentDate);
+
+
+  const existing =
+    history.some(function(record) {
+
+      return record.dateKey === dateKey;
+
+    });
+
+
+  if (!existing) {
+
+    alert("まずメニューを追加してください");
+
+    return;
+
+  }
+
+
+  alert("保存されています");
+
+}
+
+
+/* 新しいメニュー */
 
 function showNewMenuForm() {
 
@@ -688,6 +823,8 @@ function showNewMenuForm() {
 
 }
 
+
+/* 新しいメニューを作成 */
 
 function createMenu() {
 
@@ -758,10 +895,13 @@ function createMenu() {
 }
 
 
+/* メニュー編集 */
+
 function editMenu(index) {
 
   const customMenus =
     getCustomMenus();
+
 
   const menu =
     customMenus[index];
@@ -839,6 +979,8 @@ function editMenu(index) {
 }
 
 
+/* メニュー削除 */
+
 function deleteMenu(index) {
 
   const customMenus =
@@ -879,70 +1021,99 @@ function deleteMenu(index) {
 }
 
 
-function showHistory() {
+/* 過去7日間 */
+
+function displayWeek() {
+
+  const week =
+    document.getElementById("week");
+
+
+  week.innerHTML = "";
+
 
   const history =
     getHistory();
 
 
-  const historyList =
-    document.getElementById("historyList");
+  for (let i = 6; i >= 0; i--) {
+
+    const date =
+      getToday();
 
 
-  document.getElementById("history").style.display =
-    "block";
+    date.setDate(
+      date.getDate() - i
+    );
 
 
-  if (history.length === 0) {
-
-    historyList.innerHTML = `
-
-      <div class="empty">
-        まだ記録がありません
-      </div>
-
-    `;
-
-    return;
-
-  }
+    const dateKey =
+      getDateKey(date);
 
 
-  historyList.innerHTML = "";
+    const hasTraining =
+      history.some(function(record) {
+
+        return record.dateKey === dateKey;
+
+      });
 
 
-  history.slice().reverse().forEach(
-    function(record) {
-
-      const item =
-        document.createElement("div");
-
-
-      item.className = "menu-card";
-
-
-      item.innerHTML = `
-
-        <div class="menu-name">
-          ${record.name}
-        </div>
-
-        <div class="menu-detail">
-          ${record.detail} ・ ${record.date}
-        </div>
-
-      `;
+    const dayNames =
+      [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ];
 
 
-      historyList.appendChild(item);
+    const dayBox =
+      document.createElement("div");
+
+    dayBox.className = "day";
+
+
+    dayBox.innerHTML =
+      dayNames[date.getDay()];
+
+
+    const circle =
+      document.createElement("div");
+
+    circle.className = "circle";
+
+
+    if (hasTraining) {
+
+      circle.classList.add("done");
 
     }
-  );
+
+
+    if (isToday(date)) {
+
+      circle.classList.add("today");
+
+    }
+
+
+    dayBox.appendChild(circle);
+
+
+    week.appendChild(dayBox);
+
+  }
 
 }
 
 
-/* 起動時に過去7日間を表示 */
+/* 最初に表示 */
+
+displayDate();
 
 displayWeek();
 
