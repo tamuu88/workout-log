@@ -18,15 +18,38 @@
     }
 
     header {
-      padding: 28px 20px 20px;
+      padding: 24px 20px 18px;
       background: #fffdf8;
-      text-align: center;
+    }
+
+    .header-inner {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     h1 {
       margin: 0;
-      font-size: 27px;
+      font-size: 26px;
       color: #4f6259;
+    }
+
+    /* リセットは控えめ */
+
+    .reset-button {
+      margin: 0;
+      padding: 5px 8px;
+      border: none;
+      background: transparent;
+      color: #b0b5b1;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .reset-button:hover {
+      color: #7f8984;
     }
 
     main {
@@ -38,34 +61,38 @@
     h2 {
       font-size: 20px;
       color: #53665d;
-      margin-top: 10px;
+      margin: 8px 0 14px;
     }
 
     h3 {
-      margin-top: 30px;
+      margin: 28px 0 12px;
+      font-size: 16px;
       color: #697871;
     }
 
-    /* 日付移動 */
+    /* 日付 */
 
     .date-navigation {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 25px;
       background: #fffdf8;
       border-radius: 18px;
-      padding: 12px;
+      padding: 10px 12px;
+      margin-bottom: 25px;
     }
 
     .date-navigation button {
       margin: 0;
-      width: 45px;
-      height: 42px;
+      width: 42px;
+      height: 40px;
       padding: 0;
-      font-size: 24px;
+      border: none;
+      border-radius: 10px;
       background: #e8eee9;
       color: #60766b;
+      font-size: 22px;
+      cursor: pointer;
     }
 
     .date-display {
@@ -78,16 +105,44 @@
     .today-label {
       display: block;
       margin-top: 3px;
-      font-size: 12px;
+      font-size: 11px;
       color: #91a097;
+    }
+
+    /* 今日やること */
+
+    .today-card {
+      background: #fffdf8;
+      border-radius: 17px;
+      padding: 18px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px rgba(70, 80, 75, 0.05);
+    }
+
+    .today-name {
+      font-size: 19px;
+      font-weight: bold;
+      color: #52645c;
+    }
+
+    .today-detail {
+      margin-top: 7px;
+      color: #89938e;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px 20px;
+      color: #9aa29e;
+      background: #fffdf8;
+      border-radius: 17px;
     }
 
     /* 過去7日間 */
 
     .week-title {
-      margin-top: 28px;
-      margin-bottom: 12px;
-      font-size: 15px;
+      margin: 28px 0 10px;
+      font-size: 14px;
       color: #87918c;
     }
 
@@ -95,22 +150,22 @@
       display: flex;
       justify-content: space-between;
       background: #fffdf8;
-      padding: 15px 12px;
+      padding: 14px 10px;
       border-radius: 18px;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
     }
 
     .day {
       text-align: center;
-      font-size: 11px;
+      font-size: 10px;
       color: #8b948f;
       width: 13%;
     }
 
     .circle {
-      width: 28px;
-      height: 28px;
-      margin: 5px auto 4px;
+      width: 27px;
+      height: 27px;
+      margin: 5px auto 3px;
       border-radius: 50%;
       background: #e6e9e4;
     }
@@ -124,97 +179,157 @@
       outline-offset: 2px;
     }
 
-    /* メニュー */
+    /* メニュー追加ボタン */
+
+    .add-button {
+      width: 100%;
+      border: none;
+      border-radius: 15px;
+      padding: 15px;
+      background: #78988a;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* メニュー表 */
+
+    #menuList,
+    #newMenuForm {
+      display: none;
+      margin-top: 28px;
+    }
+
+    /* 3列カード */
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
 
     .menu-card {
+      position: relative;
       background: #fffdf8;
-      border-radius: 17px;
-      padding: 18px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(70,80,75,0.06);
+      border-radius: 14px;
+      padding: 13px 8px;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      box-shadow: 0 2px 7px rgba(70, 80, 75, 0.05);
     }
 
     .menu-name {
-      font-size: 18px;
+      font-size: 14px;
       font-weight: bold;
+      line-height: 1.4;
       color: #52645c;
+      word-break: break-word;
     }
 
     .menu-detail {
-      margin-top: 6px;
+      margin-top: 5px;
+      font-size: 12px;
       color: #89938e;
     }
 
-    button {
+    .use-button {
+      width: 100%;
+      margin-top: 9px;
+      padding: 7px 4px;
       border: none;
-      border-radius: 11px;
-      padding: 10px 14px;
-      margin-top: 12px;
-      background: #78988a;
+      border-radius: 8px;
+      background: #e4eee8;
+      color: #60766b;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .edit-delete {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .edit-button,
+    .delete-button {
+      flex: 1;
+      margin: 0;
+      padding: 5px 2px;
+      border: none;
+      border-radius: 7px;
+      font-size: 9px;
+      cursor: pointer;
+    }
+
+    .edit-button {
+      background: #edf0ed;
+      color: #718079;
+    }
+
+    .delete-button {
+      background: #f0eae6;
+      color: #9b8980;
+    }
+
+    .new-menu-button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px;
+      border: none;
+      border-radius: 13px;
+      background: #b5aaa0;
       color: white;
       font-size: 14px;
       cursor: pointer;
     }
 
-    .add-button,
-    .save-button,
-    .new-menu-button {
-      width: 100%;
-      border-radius: 16px;
-      padding: 17px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
+    /* 新しいメニュー */
 
-    .add-button {
-      background: #78988a;
-    }
-
-    .save-button {
-      background: #91aa9d;
-    }
-
-    .new-menu-button {
-      background: #b5aaa0;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 38px 20px;
-      color: #9aa29e;
-      background: #fffdf8;
-      border-radius: 17px;
-    }
-
-    #menuList,
-    #newMenuForm {
-      display: none;
-      margin-top: 30px;
+    label {
+      font-size: 13px;
+      color: #7d8882;
     }
 
     input,
     select {
       width: 100%;
-      padding: 14px;
-      margin-top: 8px;
-      margin-bottom: 15px;
+      padding: 13px;
+      margin-top: 7px;
+      margin-bottom: 14px;
       border: 1px solid #dfe3de;
-      border-radius: 11px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 15px;
       background: #fffdf8;
       color: #46504b;
     }
 
-    label {
+    .create-button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      background: #78988a;
+      color: white;
       font-size: 14px;
-      color: #7d8882;
     }
 
-    .saved-message {
-      text-align: center;
-      color: #78988a;
-      padding: 15px;
-      font-size: 14px;
+    @media (max-width: 400px) {
+      .menu-grid {
+        gap: 7px;
+      }
+
+      .menu-card {
+        padding: 11px 6px;
+      }
+
+      .menu-name {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
@@ -225,11 +340,12 @@
   <div class="header-inner">
     <h1>My Training</h1>
 
-    <button class="reset-today-button" onclick="resetTraining()">
+    <button class="reset-button" onclick="resetTraining()">
       リセット
     </button>
   </div>
 </header>
+
 
 <main>
 
@@ -237,18 +353,14 @@
 
   <div class="date-navigation">
 
-    <button onclick="changeDate(-1)">
-      ←
-    </button>
+    <button onclick="changeDate(-1)">←</button>
 
     <div class="date-display">
       <span id="dateDisplay"></span>
       <span class="today-label" id="todayLabel"></span>
     </div>
 
-    <button id="nextButton" onclick="changeDate(1)">
-      →
-    </button>
+    <button id="nextButton" onclick="changeDate(1)">→</button>
 
   </div>
 
@@ -259,13 +371,7 @@
     今日やること
   </h2>
 
-  <div id="todayMenu">
-  </div>
-
-
-  <button class="save-button" onclick="saveTraining()">
-    この日のトレーニングを保存
-  </button>
+  <div id="todayMenu"></div>
 
 
   <!-- 過去7日間 -->
@@ -292,11 +398,11 @@
 
     <h3>筋トレ</h3>
 
-    <div id="strengthMenus"></div>
+    <div id="strengthMenus" class="menu-grid"></div>
 
     <h3>ストレッチ</h3>
 
-    <div id="stretchMenus"></div>
+    <div id="stretchMenus" class="menu-grid"></div>
 
     <button class="new-menu-button" onclick="showNewMenuForm()">
       ＋ 新しいメニューを作る
@@ -334,7 +440,7 @@
       <option value="ストレッチ">ストレッチ</option>
     </select>
 
-    <button onclick="createMenu()">
+    <button class="create-button" onclick="createMenu()">
       メニュー表に追加
     </button>
 
@@ -380,44 +486,6 @@ const defaultMenus = [
 ];
 
 
-/* 今日の日付 */
-
-  function resetTraining() {
-
-  const dateKey =
-    getDateKey(currentDate);
-
-  const answer =
-    confirm(
-      getDateText(currentDate) +
-      "のトレーニング記録を削除しますか？"
-    );
-
-  if (!answer) {
-    return;
-  }
-
-  const history =
-    getHistory();
-
-  const newHistory =
-    history.filter(function(record) {
-
-      return record.dateKey !== dateKey;
-
-    });
-
-  localStorage.setItem(
-    "trainingHistory",
-    JSON.stringify(newHistory)
-  );
-
-  displaySavedTraining();
-
-  displayWeek();
-
-}
-
 function getToday() {
 
   const date = new Date();
@@ -429,12 +497,8 @@ function getToday() {
 }
 
 
-/* 現在表示している日 */
-
 let currentDate = getToday();
 
-
-/* 日付をYYYY-MM-DDにする */
 
 function getDateKey(date) {
 
@@ -442,19 +506,15 @@ function getDateKey(date) {
     date.getFullYear();
 
   const month =
-    String(date.getMonth() + 1)
-      .padStart(2, "0");
+    String(date.getMonth() + 1).padStart(2, "0");
 
   const day =
-    String(date.getDate())
-      .padStart(2, "0");
+    String(date.getDate()).padStart(2, "0");
 
   return year + "-" + month + "-" + day;
 
 }
 
-
-/* 日本語の日付 */
 
 function getDateText(date) {
 
@@ -470,8 +530,6 @@ function getDateText(date) {
 }
 
 
-/* 今日かどうか */
-
 function isToday(date) {
 
   return (
@@ -482,8 +540,6 @@ function isToday(date) {
 }
 
 
-/* 保存データ */
-
 function getHistory() {
 
   return JSON.parse(
@@ -492,8 +548,6 @@ function getHistory() {
 
 }
 
-
-/* カスタムメニュー */
 
 function getCustomMenus() {
 
@@ -504,7 +558,7 @@ function getCustomMenus() {
 }
 
 
-/* 日付を表示 */
+/* 日付表示 */
 
 function displayDate() {
 
@@ -513,9 +567,7 @@ function displayDate() {
 
 
   document.getElementById("todayLabel").textContent =
-    isToday(currentDate)
-      ? "今日"
-      : "";
+    isToday(currentDate) ? "今日" : "";
 
 
   document.getElementById("trainingTitle").textContent =
@@ -524,15 +576,16 @@ function displayDate() {
       : getDateText(currentDate) + "のトレーニング";
 
 
-  /* 今日より未来には進めない */
+  const nextButton =
+    document.getElementById("nextButton");
 
-  document.getElementById("nextButton").disabled =
+
+  nextButton.disabled =
     isToday(currentDate);
 
-  document.getElementById("nextButton").style.opacity =
-    isToday(currentDate)
-      ? "0.35"
-      : "1";
+
+  nextButton.style.opacity =
+    isToday(currentDate) ? "0.35" : "1";
 
 
   displaySavedTraining();
@@ -540,7 +593,7 @@ function displayDate() {
 }
 
 
-/* 前の日・次の日 */
+/* 日付移動 */
 
 function changeDate(amount) {
 
@@ -553,11 +606,11 @@ function changeDate(amount) {
 }
 
 
-/* その日の保存済みトレーニングを表示 */
+/* その日の記録を表示 */
 
 function displaySavedTraining() {
 
-  const todayMenu =
+  const container =
     document.getElementById("todayMenu");
 
 
@@ -579,7 +632,7 @@ function displaySavedTraining() {
 
   if (records.length === 0) {
 
-    todayMenu.innerHTML = `
+    container.innerHTML = `
 
       <div class="empty">
         まだメニューがありません
@@ -592,7 +645,7 @@ function displaySavedTraining() {
   }
 
 
-  todayMenu.innerHTML = "";
+  container.innerHTML = "";
 
 
   records.forEach(function(record) {
@@ -600,34 +653,30 @@ function displaySavedTraining() {
     const card =
       document.createElement("div");
 
-    card.className = "menu-card";
+    card.className = "today-card";
 
 
     card.innerHTML = `
 
-      <div class="menu-name">
+      <div class="today-name">
         ${record.name}
       </div>
 
-      <div class="menu-detail">
+      <div class="today-detail">
         ${record.detail}
-      </div>
-
-      <div class="saved-message">
-        保存済み
       </div>
 
     `;
 
 
-    todayMenu.appendChild(card);
+    container.appendChild(card);
 
   });
 
 }
 
 
-/* メニュー表を開く */
+/* メニュー表を表示 */
 
 function showMenu() {
 
@@ -674,24 +723,34 @@ function displayMenus() {
     card.className = "menu-card";
 
 
-    card.innerHTML = `
+    const name =
+      document.createElement("div");
 
-      <div class="menu-name">
-        ${menu.name}
-      </div>
+    name.className = "menu-name";
 
-      <div class="menu-detail">
-        ${menu.detail}
-      </div>
-
-      <button class="use-button">
-        この日に追加
-      </button>
-
-    `;
+    name.textContent =
+      menu.name;
 
 
-    card.querySelector(".use-button").onclick =
+    const detail =
+      document.createElement("div");
+
+    detail.className = "menu-detail";
+
+    detail.textContent =
+      menu.detail;
+
+
+    const useButton =
+      document.createElement("button");
+
+    useButton.className = "use-button";
+
+    useButton.textContent =
+      "この日に追加";
+
+
+    useButton.onclick =
       function() {
 
         addMenu(
@@ -702,7 +761,14 @@ function displayMenus() {
       };
 
 
-    /* 自分で追加したメニューだけ編集・削除 */
+    card.appendChild(name);
+
+    card.appendChild(detail);
+
+    card.appendChild(useButton);
+
+
+    /* 自分で追加したメニュー */
 
     if (index >= defaultMenus.length) {
 
@@ -710,10 +776,21 @@ function displayMenus() {
         index - defaultMenus.length;
 
 
+      const editDelete =
+        document.createElement("div");
+
+      editDelete.className =
+        "edit-delete";
+
+
       const editButton =
         document.createElement("button");
 
-      editButton.textContent = "編集";
+      editButton.className =
+        "edit-button";
+
+      editButton.textContent =
+        "編集";
 
 
       editButton.onclick =
@@ -727,10 +804,11 @@ function displayMenus() {
       const deleteButton =
         document.createElement("button");
 
-      deleteButton.textContent = "削除";
+      deleteButton.className =
+        "delete-button";
 
-      deleteButton.style.background =
-        "#b9aaa2";
+      deleteButton.textContent =
+        "削除";
 
 
       deleteButton.onclick =
@@ -741,9 +819,11 @@ function displayMenus() {
         };
 
 
-      card.appendChild(editButton);
+      editDelete.appendChild(editButton);
 
-      card.appendChild(deleteButton);
+      editDelete.appendChild(deleteButton);
+
+      card.appendChild(editDelete);
 
     }
 
@@ -763,7 +843,7 @@ function displayMenus() {
 }
 
 
-/* メニューをその日に追加 */
+/* メニューを選択 */
 
 function addMenu(name, detail) {
 
@@ -775,7 +855,10 @@ function addMenu(name, detail) {
     getDateKey(currentDate);
 
 
-  /* 同じ日の既存記録を削除 */
+  /*
+    その日にすでに記録がある場合は、
+    いったん削除して新しいメニューに置き換える
+  */
 
   const newHistory =
     history.filter(function(record) {
@@ -803,11 +886,8 @@ function addMenu(name, detail) {
 
 
   localStorage.setItem(
-
     "trainingHistory",
-
     JSON.stringify(newHistory)
-
   );
 
 
@@ -822,19 +902,19 @@ function addMenu(name, detail) {
 }
 
 
-/* 保存 */
+/* その日の記録をリセット */
 
-function saveTraining() {
-
-  const history =
-    getHistory();
-
+function resetTraining() {
 
   const dateKey =
     getDateKey(currentDate);
 
 
-  const existing =
+  const history =
+    getHistory();
+
+
+  const hasRecord =
     history.some(function(record) {
 
       return record.dateKey === dateKey;
@@ -842,21 +922,49 @@ function saveTraining() {
     });
 
 
-  if (!existing) {
-
-    alert("まずメニューを追加してください");
+  if (!hasRecord) {
 
     return;
 
   }
 
 
-  alert("保存されています");
+  const answer =
+    confirm(
+      getDateText(currentDate) +
+      "のトレーニングをリセットしますか？"
+    );
+
+
+  if (!answer) {
+
+    return;
+
+  }
+
+
+  const newHistory =
+    history.filter(function(record) {
+
+      return record.dateKey !== dateKey;
+
+    });
+
+
+  localStorage.setItem(
+    "trainingHistory",
+    JSON.stringify(newHistory)
+  );
+
+
+  displaySavedTraining();
+
+  displayWeek();
 
 }
 
 
-/* 新しいメニュー */
+/* 新しいメニューを表示 */
 
 function showNewMenuForm() {
 
@@ -912,15 +1020,9 @@ function createMenu() {
 
 
   localStorage.setItem(
-
     "customMenus",
-
     JSON.stringify(customMenus)
-
   );
-
-
-  alert("メニュー表に追加しました");
 
 
   document.getElementById("newMenuName").value = "";
@@ -933,6 +1035,9 @@ function createMenu() {
 
 
   displayMenus();
+
+
+  alert("メニュー表に追加しました");
 
 }
 
@@ -1006,17 +1111,12 @@ function editMenu(index) {
 
 
   localStorage.setItem(
-
     "customMenus",
-
     JSON.stringify(customMenus)
-
   );
 
 
   displayMenus();
-
-  alert("編集しました");
 
 }
 
@@ -1048,17 +1148,12 @@ function deleteMenu(index) {
 
 
   localStorage.setItem(
-
     "customMenus",
-
     JSON.stringify(customMenus)
-
   );
 
 
   displayMenus();
-
-  alert("削除しました");
 
 }
 
@@ -1102,31 +1197,25 @@ function displayWeek() {
 
 
     const dayNames =
-      [
-        "日",
-        "月",
-        "火",
-        "水",
-        "木",
-        "金",
-        "土"
-      ];
+      ["日", "月", "火", "水", "木", "金", "土"];
 
 
     const dayBox =
       document.createElement("div");
 
-    dayBox.className = "day";
+    dayBox.className =
+      "day";
 
 
-    dayBox.innerHTML =
+    dayBox.textContent =
       dayNames[date.getDay()];
 
 
     const circle =
       document.createElement("div");
 
-    circle.className = "circle";
+    circle.className =
+      "circle";
 
 
     if (hasTraining) {
@@ -1145,7 +1234,6 @@ function displayWeek() {
 
     dayBox.appendChild(circle);
 
-
     week.appendChild(dayBox);
 
   }
@@ -1153,7 +1241,7 @@ function displayWeek() {
 }
 
 
-/* 最初に表示 */
+/* 起動 */
 
 displayDate();
 
